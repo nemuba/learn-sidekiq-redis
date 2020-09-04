@@ -29,6 +29,8 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.save
         AuditJob.perform_later(@task, 'create')
+        TaskCreateMailer.create('Hi, nice to meet you').deliver_later
+
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
