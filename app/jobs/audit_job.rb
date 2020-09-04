@@ -5,7 +5,7 @@ class AuditJob < ApplicationJob
     puts "Dados não foram encontrados."
   end
 
-  def perform(table, action)
-    Audit.create(table_name: table.class, key: table.id, action: action)
+  def perform(task_id, action)
+    Audit.create(table_name: 'Task', key: task_id, action: action)
   end
 end

@@ -28,7 +28,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        AuditJob.perform_later(@task, 'create')
+        AuditJob.perform_later(@task.id, 'create')
         TaskCreateMailer.create('Hi, nice to meet you').deliver_later
 
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
@@ -45,7 +45,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        AuditJob.perform_later(@task, 'update')
+        AuditJob.perform_later(@task.id, 'update')
         format.html { redirect_to @task, notice: 'Task was successfully updated.' }
         format.json { render :show, status: :ok, location: @task }
       else
@@ -58,8 +58,8 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
-    AuditJob.perform_later(@task, 'destroy')
     @task.destroy
+    AuditJob.perform_later(params[:id], 'destroy')
     respond_to do |format|
       format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
