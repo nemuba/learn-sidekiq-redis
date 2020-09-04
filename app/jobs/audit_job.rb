@@ -6,7 +6,7 @@ class AuditJob < ApplicationJob
   end
 
   def perform(table, action)
-    TaskCreateMailer.create('Hi, nice to meet you.').deliver_later
+    TaskCreateMailer.create('Hi, nice to meet you.').deliver
     Audit.create(table_name: table.class, key: table.id, action: action)
   end
 end
