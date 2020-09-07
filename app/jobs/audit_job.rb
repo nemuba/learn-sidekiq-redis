@@ -9,3 +9,4 @@ class AuditJob < ApplicationJob
     Audit.create(table_name: 'Task', key: task_id, action: action)
   end
 end
+
